@@ -1,0 +1,31 @@
+{
+  "name": "paintnt",
+  "version": "0.1.0",
+  "description": "Paintn't: a tiny headless paint-style graphics library for TypeScript.",
+  "type": "module",
+  "module": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "files": [
+    "src",
+    "assets",
+    "README.md"
+  ],
+  "scripts": {
+    "test": "bun test"
+  },
+  "devDependencies": {
+    "bun-types": "latest"
+  },
+  "keywords": [
+    "bitmap",
+    "bmp",
+    "bun",
+    "graphics",
+    "paint",
+    "typescript"
+  ],
+  "license": "MIT"
+}
