@@ -8,6 +8,17 @@ A tiny headless paint-style graphics library for TypeScript.
 
 It does not ship with a GUI. You manipulate pixels, selections, shapes, text, transforms, and clipboard-like operations entirely through code.
 
+## Kitchen Sink Demo
+
+![Kitchen Sink Demo](./assets/kitchen-sink-demo.bmp)
+
+## Is It Vibe Coded?
+
+A picture says a thousand words.
+
+![Pelican on a bike](./assets/pelican-bike.bmp)
+
+
 ## Features
 
 - In-memory bitmap canvas
@@ -64,10 +75,6 @@ doc.tools.fill.draw({
 
 await doc.save("out.bmp");
 ```
-
-## Kitchen Sink Demo
-
-![Kitchen Sink Demo](./assets/kitchen-sink-demo.bmp)
 
 ## Design goals
 
