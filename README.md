@@ -1,6 +1,6 @@
 # Paintn't
 
-![Kitchen Sink Demo](./assets/kitchen-sink-demo.bmp)
+![Paintn't Logo](./assets/paintnt-logo.bmp)
 
 A tiny headless paint-style graphics library for TypeScript.
 
@@ -64,6 +64,10 @@ doc.tools.fill.draw({
 
 await doc.save("out.bmp");
 ```
+
+## Kitchen Sink Demo
+
+![Kitchen Sink Demo](./assets/kitchen-sink-demo.bmp)
 
 ## Design goals
 
