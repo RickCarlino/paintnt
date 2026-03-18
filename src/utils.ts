@@ -1,4 +1,4 @@
-import type { Anchor, Point, Rect, RGBAColor } from "./types.ts";
+import type { Anchor, Point, Rect, RGBAColor } from "./types.js";
 
 export function assertInteger(value: number, label: string): number {
   if (!Number.isInteger(value)) {

@@ -1,5 +1,5 @@
-import type { BrushShape, ColorInput, RGBAColor } from "./types.ts";
-import { parseColor } from "./colors.ts";
+import type { BrushShape, ColorInput, RGBAColor } from "./types.js";
+import { parseColor } from "./colors.js";
 
 export class PaintState {
   private currentColorValue: RGBAColor;

@@ -1,6 +1,6 @@
-import { Bitmap } from "./bitmap.ts";
-import { parseColor } from "./colors.ts";
-import type { ColorInput, Point, Rect, ResizeCanvasOptions, SkewOptions, StretchOptions } from "./types.ts";
+import { Bitmap } from "./bitmap.js";
+import { parseColor } from "./colors.js";
+import type { ColorInput, Point, Rect, ResizeCanvasOptions, SkewOptions, StretchOptions } from "./types.js";
 import {
   anchorOffset,
   nearlyZero,
@@ -8,8 +8,8 @@ import {
   rotatePointClockwise180,
   rotatePointClockwise270,
   rotatePointClockwise90,
-} from "./utils.ts";
-import type { PaintDocument } from "./document.ts";
+} from "./utils.js";
+import type { PaintDocument } from "./document.js";
 
 interface TargetRegion {
   origin: Point;

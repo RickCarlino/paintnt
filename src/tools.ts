@@ -1,12 +1,12 @@
-import { parseColor } from "./colors.ts";
-import { DEFAULT_BITMAP_FONT } from "./font.ts";
+import { parseColor } from "./colors.js";
+import { DEFAULT_BITMAP_FONT } from "./font.js";
 import type {
   BitmapFont,
   BrushShape,
   ColorInput,
   Point,
   Rect,
-} from "./types.ts";
+} from "./types.js";
 import {
   bresenhamLine,
   colorDistance,
@@ -17,8 +17,8 @@ import {
   normalizeRect,
   pointInPolygon,
   polygonBounds,
-} from "./utils.ts";
-import type { PaintDocument } from "./document.ts";
+} from "./utils.js";
+import type { PaintDocument } from "./document.js";
 
 export class ToolRegistry {
   readonly pencil: PencilTool;

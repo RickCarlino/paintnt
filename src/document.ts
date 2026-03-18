@@ -1,15 +1,25 @@
-import { Bitmap } from "./bitmap.ts";
-import { decodeBmp, encodeBmp } from "./bmp.ts";
-import { parseColor } from "./colors.ts";
-import { EditManager } from "./edit.ts";
-import { ImageManager } from "./image.ts";
-import { SelectionManager } from "./selection.ts";
-import { PaintState } from "./state.ts";
-import { ToolRegistry } from "./tools.ts";
-import type { ColorInput, PaintDocumentOptions, Rect } from "./types.ts";
-import { assertPositiveInteger } from "./utils.ts";
+import { Bitmap } from "./bitmap.js";
+import { decodeBmp, encodeBmp } from "./bmp.js";
+import { parseColor } from "./colors.js";
+import { EditManager } from "./edit.js";
+import { ImageManager } from "./image.js";
+import { SelectionManager } from "./selection.js";
+import { PaintState } from "./state.js";
+import { ToolRegistry } from "./tools.js";
+import type {
+  ColorInput,
+  PaintDocumentImportOptions,
+  PaintDocumentIO,
+  PaintDocumentOptions,
+  Rect,
+} from "./types.js";
+import { assertPositiveInteger } from "./utils.js";
+
+const MISSING_DOCUMENT_IO_ERROR =
+  'Path-based document I/O is not configured. Import from "paintnt/node" for filesystem access, or use PaintDocument.fromBytes() in runtime-neutral code.';
 
 export class PaintDocument {
+  private static io: PaintDocumentIO | null = null;
   private bitmapValue: Bitmap;
   readonly state: PaintState;
   readonly tools: ToolRegistry;
@@ -30,15 +40,38 @@ export class PaintDocument {
     this.tools = new ToolRegistry(this);
   }
 
-  static async open(path: string): Promise<PaintDocument> {
-    const bytes = await Bun.file(path).bytes();
-    const bitmap = decodeBmp(bytes);
+  static configureIO(io: PaintDocumentIO | null): void {
+    PaintDocument.io = io;
+  }
+
+  static async open(path: string | URL): Promise<PaintDocument> {
+    if (!PaintDocument.io) {
+      throw new Error(MISSING_DOCUMENT_IO_ERROR);
+    }
+
+    const bytes = await PaintDocument.io.open(path);
+    return PaintDocument.fromBytes(bytes, "bmp");
+  }
+
+  static fromBytes(
+    bytes: Uint8Array,
+    format: "bmp",
+    options?: PaintDocumentImportOptions,
+  ): PaintDocument {
+    if (format !== "bmp") {
+      throw new Error(`Unsupported import format: ${format}`);
+    }
+
+    return PaintDocument.fromBitmap(decodeBmp(bytes), options);
+  }
+
+  static fromBitmap(bitmap: Bitmap, options?: PaintDocumentImportOptions): PaintDocument {
     const doc = new PaintDocument({
       width: bitmap.width,
       height: bitmap.height,
-      background: "#ffffff",
+      background: options?.background ?? "#ffffff",
     });
-    doc.replaceBitmap(bitmap);
+    doc.replaceBitmap(bitmap.clone());
     return doc;
   }
 
@@ -46,8 +79,12 @@ export class PaintDocument {
     return this.bitmapValue;
   }
 
-  async save(path: string): Promise<void> {
-    await Bun.write(path, await this.encode("bmp"));
+  async save(path: string | URL): Promise<void> {
+    if (!PaintDocument.io) {
+      throw new Error(MISSING_DOCUMENT_IO_ERROR);
+    }
+
+    await PaintDocument.io.save(path, await this.encode("bmp"));
   }
 
   async encode(format: "bmp"): Promise<Uint8Array> {

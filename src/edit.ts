@@ -1,7 +1,7 @@
-import type { ClipboardRegion, ColorInput, Rect } from "./types.ts";
-import { parseColor } from "./colors.ts";
-import { intersectRect, normalizeRect, rectFromSize } from "./utils.ts";
-import type { PaintDocument } from "./document.ts";
+import type { ClipboardRegion, ColorInput, Rect } from "./types.js";
+import { parseColor } from "./colors.js";
+import { intersectRect, normalizeRect, rectFromSize } from "./utils.js";
+import type { PaintDocument } from "./document.js";
 
 export class EditManager {
   constructor(private readonly doc: PaintDocument) {}

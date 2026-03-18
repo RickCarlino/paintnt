@@ -1,12 +1,12 @@
-export { Bitmap } from "./bitmap.ts";
-export { Colors, parseColor } from "./colors.ts";
-export { PaintDocument } from "./document.ts";
-export { EditManager } from "./edit.ts";
-export { DEFAULT_BITMAP_FONT, createBitmapFont } from "./font.ts";
-export { ImageManager } from "./image.ts";
-export { SelectionManager } from "./selection.ts";
-export { PaintState } from "./state.ts";
-export { ToolRegistry } from "./tools.ts";
+export { Bitmap } from "./bitmap.js";
+export { Colors, parseColor } from "./colors.js";
+export { PaintDocument } from "./document.js";
+export { EditManager } from "./edit.js";
+export { DEFAULT_BITMAP_FONT, createBitmapFont } from "./font.js";
+export { ImageManager } from "./image.js";
+export { SelectionManager } from "./selection.js";
+export { PaintState } from "./state.js";
+export { ToolRegistry } from "./tools.js";
 export type {
   Anchor,
   BitmapFont,
@@ -14,6 +14,8 @@ export type {
   BrushShape,
   ClipboardRegion,
   ColorInput,
+  PaintDocumentImportOptions,
+  PaintDocumentIO,
   PaintDocumentOptions,
   Point,
   Rect,
@@ -22,4 +24,4 @@ export type {
   SelectionMaskOptions,
   SkewOptions,
   StretchOptions,
-} from "./types.ts";
+} from "./types.js";

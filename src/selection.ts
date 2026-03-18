@@ -1,6 +1,6 @@
-import type { Rect, SelectionMaskOptions } from "./types.ts";
-import { intersectRect, normalizeRect, rectFromSize } from "./utils.ts";
-import type { PaintDocument } from "./document.ts";
+import type { Rect, SelectionMaskOptions } from "./types.js";
+import { intersectRect, normalizeRect, rectFromSize } from "./utils.js";
+import type { PaintDocument } from "./document.js";
 
 class ActiveSelection {
   readonly bounds: Rect;

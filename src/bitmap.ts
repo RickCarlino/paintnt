@@ -1,6 +1,6 @@
-import type { ColorInput, Rect, RGBAColor } from "./types.ts";
-import { parseColor } from "./colors.ts";
-import { clamp } from "./utils.ts";
+import type { ColorInput, Rect, RGBAColor } from "./types.js";
+import { parseColor } from "./colors.js";
+import { clamp } from "./utils.js";
 
 function compositeChannel(source: number, destination: number, alpha: number): number {
   return Math.round(source * alpha + destination * (1 - alpha));

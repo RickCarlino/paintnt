@@ -1,4 +1,4 @@
-import type { BitmapFont, BitmapFontGlyph } from "../types.ts";
+import type { BitmapFont, BitmapFontGlyph } from "../types.js";
 
 const glyphs: Record<string, BitmapFontGlyph> = {
   "0": {

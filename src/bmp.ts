@@ -1,4 +1,4 @@
-import { Bitmap } from "./bitmap.ts";
+import { Bitmap } from "./bitmap.js";
 
 const BMP_FILE_HEADER_SIZE = 14;
 const BMP_INFO_HEADER_SIZE = 40;

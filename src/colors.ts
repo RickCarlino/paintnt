@@ -1,5 +1,5 @@
-import type { ColorInput, RGBAColor } from "./types.ts";
-import { clampByte } from "./utils.ts";
+import type { ColorInput, RGBAColor } from "./types.js";
+import { clampByte } from "./utils.js";
 
 const NAMED_COLORS: Record<string, RGBAColor> = {
   black: { r: 0, g: 0, b: 0, a: 255 },

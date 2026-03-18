@@ -38,13 +38,23 @@ A picture says a thousand words.
 ## Installation
 
 ```bash
+npm install paintnt
+```
+
+```bash
 bun add paintnt
 ```
 
-## Quick start
+## Entry points
+
+- `paintnt`: runtime-neutral core bitmap API
+- `paintnt/node`: Node and Bun filesystem helpers for `open()` / `save()`
+- `paintnt/browser`: browser helpers for `ImageData` and `<canvas>`
+
+## Quick start (Node or Bun)
 
 ```ts
-import { PaintDocument, Colors } from "paintnt";
+import { PaintDocument, Colors } from "paintnt/node";
 
 const doc = new PaintDocument({
   width: 320,
@@ -142,13 +152,51 @@ const doc = new PaintDocument({
 ## Loading an existing image
 
 ```ts
+import { PaintDocument } from "paintnt/node";
+
 const doc = await PaintDocument.open("sprite.bmp");
 ```
 
 ## Saving
 
 ```ts
+import { PaintDocument } from "paintnt/node";
+
 await doc.save("sprite.bmp");
+```
+
+## Loading from bytes
+
+```ts
+import { PaintDocument } from "paintnt";
+
+const response = await fetch("/sprite.bmp");
+const bytes = new Uint8Array(await response.arrayBuffer());
+const doc = PaintDocument.fromBytes(bytes, "bmp");
+```
+
+## Browser canvas interop
+
+```ts
+import {
+  PaintDocument,
+  documentFromCanvas,
+  renderDocumentToCanvas,
+} from "paintnt/browser";
+
+const sourceCanvas = document.querySelector("canvas")!;
+const previewCanvas = document.querySelector("#preview")!;
+
+const doc = documentFromCanvas(sourceCanvas);
+
+doc.tools.text.draw({
+  x: 8,
+  y: 8,
+  text: "HELLO",
+  color: "#000",
+});
+
+renderDocumentToCanvas(doc, previewCanvas, { resizeCanvas: true });
 ```
 
 ## Colors
@@ -372,6 +420,8 @@ doc.edit.paste(clip, {
 ## Paste from another document
 
 ```ts
+import { PaintDocument } from "paintnt/node";
+
 const src = await PaintDocument.open("source.bmp");
 const region = src.edit.copy({ x: 0, y: 0, width: 32, height: 32 });
 
@@ -477,6 +527,8 @@ const rgba = doc.bitmap.toRGBA();
 const bytes = await doc.encode("bmp");
 ```
 
+`PaintDocument.fromBytes(...)` is the inverse of `encode("bmp")` for BMP data.
+
 ## Extending the built-in font
 
 The shipped font is intentionally simple. Users can supply their own `BitmapFont` to `doc.tools.text.draw(...)`, or construct one with `createBitmapFont(...)`.
@@ -486,7 +538,8 @@ The shipped font is intentionally simple. Users can supply their own `BitmapFont
 ```bash
 bun install
 bun test
-bunx tsc --noEmit
+bun run check
+bun run build
 ```
 
 ## TypeScript API overview
@@ -514,10 +567,23 @@ export interface PaintDocumentOptions {
   background?: ColorInput;
 }
 
+export interface PaintDocumentImportOptions {
+  background?: ColorInput;
+}
+
 export class PaintDocument {
   constructor(options: PaintDocumentOptions);
 
-  static open(path: string): Promise<PaintDocument>;
+  static open(path: string | URL): Promise<PaintDocument>;
+  static fromBytes(
+    bytes: Uint8Array,
+    format: "bmp",
+    options?: PaintDocumentImportOptions,
+  ): PaintDocument;
+  static fromBitmap(
+    bitmap: Bitmap,
+    options?: PaintDocumentImportOptions,
+  ): PaintDocument;
 
   readonly bitmap: Bitmap;
   readonly state: PaintState;
@@ -526,10 +592,12 @@ export class PaintDocument {
   readonly edit: EditManager;
   readonly image: ImageManager;
 
-  save(path: string): Promise<void>;
+  save(path: string | URL): Promise<void>;
   encode(format: "bmp"): Promise<Uint8Array>;
 }
 ```
+
+`open()` and `save()` require a configured document I/O adapter. Importing from `paintnt/node` configures that automatically for Node and Bun.
 
 ## Supported operations
 
@@ -591,9 +659,15 @@ All operations are deterministic given the same inputs and seed values.
 
 ## Runtime support
 
+- Node
 - Bun
+- Browser
 
-This version is Bun-first on purpose. The in-memory bitmap APIs are portable, but file I/O helpers like `open()` and `save()` currently target Bun so the package can stay build-free for now.
+The core renderer is runtime-neutral.
+
+- Use `paintnt` for pure in-memory bitmap work.
+- Use `paintnt/node` when you want filesystem-backed `open()` and `save()`.
+- Use `paintnt/browser` when you want `ImageData` or canvas interop.
 
 ## FAQ
 
@@ -603,11 +677,11 @@ No.
 
 ### Does it need Canvas or the DOM?
 
-No.
+No for the core library. `paintnt/browser` adds canvas helpers when you want browser interop.
 
 ### Can I use it in a web app?
 
-Yes.
+Yes. Use `paintnt/browser` to read pixels from a canvas, render back to one, or bridge through `ImageData`.
 
 ### Does text rendering vary across platforms?
 

@@ -2,6 +2,7 @@ node_modules/
 
 dist/
 build/
+browser-test/
 coverage/
 *.tsbuildinfo
 *.tgz

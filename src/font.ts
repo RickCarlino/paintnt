@@ -1,5 +1,5 @@
-import type { BitmapFont, BitmapFontGlyph } from "./types.ts";
-import { DEFAULT_BITMAP_FONT } from "./generated/default-font.ts";
+import type { BitmapFont, BitmapFontGlyph } from "./types.js";
+import { DEFAULT_BITMAP_FONT } from "./generated/default-font.js";
 
 export function createBitmapFont(options: {
   name: string;

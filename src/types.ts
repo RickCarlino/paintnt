@@ -32,6 +32,15 @@ export interface PaintDocumentOptions {
   background?: ColorInput;
 }
 
+export interface PaintDocumentImportOptions {
+  background?: ColorInput;
+}
+
+export interface PaintDocumentIO {
+  open(path: string | URL): Promise<Uint8Array>;
+  save(path: string | URL, bytes: Uint8Array): Promise<void>;
+}
+
 export type BrushShape = "round" | "square";
 
 export type Anchor =
